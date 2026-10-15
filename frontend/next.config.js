@@ -1,4 +1,4 @@
-﻿const path = require("path");
+const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -22,6 +22,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "storage.computersales.ir",
+      },
       {
         protocol: "https",
         hostname: "savehyar.storage.iran.liara.space",
