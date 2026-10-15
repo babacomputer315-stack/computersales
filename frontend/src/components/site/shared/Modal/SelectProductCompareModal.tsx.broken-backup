@@ -1,0 +1,138 @@
+import React, { useEffect, useState } from "react";
+import Modal from "./Modal";
+import {
+  Category,
+  Product,
+  userProductService,
+} from "@/services/user/product.service";
+import Image from "next/image";
+import { imageBaseUrl } from "@/utils/constants";
+import { formatNumber } from "@/utils/formatNumber";
+import { useRouter } from "next/router";
+
+const SelectProductCompareModal = ({
+  open,
+  setOpen,
+  primaryCategory,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  primaryCategory: Category;
+}) => {
+  const [search, setSearch] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+  const { pathname } = useRouter();
+
+  const handleSearch = async () => {
+    setLoading(true);
+    setProducts([]);
+    try {
+      const response = await userProductService.getProducts({
+        categoryId: primaryCategory.id,
+        name: search,
+        limit: 100,
+      });
+      setProducts(response.data.data);
+    } catch (error) {
+      console.error("Error searching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleSearch();
+  }, [search]);
+
+  return (
+    <Modal
+      open={open}
+      setOpen={setOpen}
+      headerClassName="!mb-0"
+      title="انتخاب کالا برای مقایسه"
+    >
+      <div className="min-h-[85vh]">
+        <div className="sticky top-20 z-10 bg-white py-6">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="جستجوی کالا"
+            className="w-full h-12 px-3 rounded-lg text-sm text-right  bg-[#F4F6FA] outline-none"
+          />
+        </div>
+        {loading ? (
+          <div className="site">
+            <div className="lg:container lg:mx-auto">
+              <div className="flex items-center justify-center min-h-[70vh]">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+                  <p className="mt-4 text-gray-600">در حال بارگذاری...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {products?.map((product) => (
+              <div
+                key={product.id}
+                className="border border-stroke rounded-xl overflow-hidden flex p-4 gap-2 pr-0"
+              >
+                <Image
+                  src={`${imageBaseUrl}/${
+                    product.images?.find((image) => image.isThumbnail)?.file
+                      ?.name
+                  }`}
+                  alt={product.name}
+                  width={100}
+                  height={100}
+                />
+                <div className="flex-1 flex flex-col justify-between">
+                  <h3 className="text-xs font-peydaEn font-medium leading-6">
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center justify-between gap-2">
+                    <div
+                      onClick={() => {
+                        setOpen(false);
+                        router.replace(`${pathname}/${product.slug}`);
+                      }}
+                      className="bg-[#E6ECF3] text-secondary-900 text-xs font-medium h-8 px-4 flex items-center justify-center rounded-lg cursor-pointer"
+                    >
+                      افزودن
+                    </div>
+                    <div className="text-xs">
+                      {product.salePrice ? (
+                        <>
+                          <span className="font-semibold">
+                            {formatNumber(product.salePrice)}
+                          </span>
+                          <span className="text-gray-500 mr-1">تومان</span>
+                        </>
+                      ) : product.regularPrice ? (
+                        <>
+                          <span className="font-semibold">
+                            {formatNumber(product.regularPrice)}
+                          </span>
+                          <span className="text-gray-500 mr-1">تومان</span>
+                        </>
+                      ) : (
+                        "تماس بگیرید"
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </Modal>
+  );
+};
+
+export default SelectProductCompareModal;

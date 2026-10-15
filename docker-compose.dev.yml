@@ -1,0 +1,19 @@
+# Isolated local development database. This never references the original/production DB.
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: computersales_dev
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - computersales_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devuser -d computersales_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  computersales_dev_data:

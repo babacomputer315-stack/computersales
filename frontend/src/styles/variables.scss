@@ -1,0 +1,77 @@
+/* Admin Theme */
+.admin {
+  --primary-50: #e7f3ff;
+  --primary-100: #b3d9ff;
+  --primary-200: #8ec6ff;
+  --primary-300: #5badff;
+  --primary-400: #3b9dff;
+  --primary-500: #0a84ff;
+  --primary-600: #0978e8;
+  --primary-700: #075eb5;
+  --primary-800: #06498c;
+  --primary-900: #04376b;
+
+  --primary-500-08: rgba(27, 119, 255, 0.08);
+  --primary-500-06: rgba(10, 132, 255, 0.06);
+  --primary-500-20: rgba(27, 119, 255, 0.2);
+
+  --success: #1dc36b;
+  --success-light: #d8fbe9;
+  --success-05: rgba(38, 188, 124, 0.05);
+  --warning: #e99523;
+  --warning-light: rgba(233, 149, 35, 0.1);
+  --danger: #f04055;
+  --danger-light: #ffefef;
+  --info: rgba(10, 132, 255, 1);
+  --info-light: rgba(231, 243, 255, 1);
+
+  --dark: #1d1f30;
+  --light: #4d627d;
+  --dark-blue: #1a2230;
+  --icon: #1d1f30;
+  // --stroke: #e2e6eb;
+  --stroke: #eff3f8;
+  --neutral: #f4f6f8;
+  --main-background: #f3f5f7;
+
+  --white-05: rgba(255, 255, 255, 0.05);
+  --white-10: rgba(255, 255, 255, 0.1);
+  --white-70: rgba(255, 255, 255, 0.7);
+}
+
+/* Site Theme */
+.site {
+  --primary: #c4161c;
+
+  --secondary-900: #023f88;
+
+  --gray: #f2f2f2;
+
+  --gray-800: #5d6676;
+
+  --neutral: #f0efeb;
+  --dark: #25282c;
+  --primary-05: #002a230d;
+
+  --success: #1e9840;
+  --success-light: #e8f5ec;
+  --warning: #efb94c;
+  --warning-light: #fdf4e9;
+  --danger: #e64747;
+  --danger-light: #ffefef;
+
+  --main-text: #191a26;
+  --secondary-text: #666666;
+
+  --stroke: #e6eaf3;
+
+  --white-05: rgba(255, 255, 255, 0.05);
+  --white-08: rgba(255, 255, 255, 0.08);
+  --white-50: rgba(255, 255, 255, 0.5);
+  --white-10: rgba(255, 255, 255, 0.1);
+  --white-20: rgba(255, 255, 255, 0.2);
+  --white-25: rgba(255, 255, 255, 0.25);
+  --white-70: rgba(255, 255, 255, 0.7);
+
+  --input-bg: #f4f6fa;
+}

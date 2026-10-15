@@ -1,0 +1,327 @@
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import StoreBenefits from "./StoreBenefits";
+
+const footerLinks = [
+  {
+    title: "فروشگاه",
+    links: [
+      {
+        title: "پیشنهادات ویژه",
+        href: "/products",
+      },
+      {
+        title: "تازه ترین محصولات",
+        href: "/products",
+      },
+      {
+        title: "محصولات پرفروش",
+        href: "/products",
+      },
+    ],
+  },
+  {
+    title: "دسترسی سریع",
+    links: [
+      {
+        title: "مقالات آموزشی",
+        href: "/blog",
+      },
+      {
+        title: "تماس با ما",
+        href: "/contact-us",
+      },
+      {
+        title: "درباره ما",
+        href: "/about-us",
+      },
+    ],
+  },
+  {
+    title: "لینک های دسترسی",
+    links: [
+      {
+        title: "رویه های بازگرداندن کالا",
+        href: "/blog",
+      },
+      {
+        title: "پرسش های متداول",
+        href: "/contact-us",
+      },
+      {
+        title: "پیگیری سفارشات",
+        href: "/about-us",
+      },
+    ],
+  },
+];
+
+const footerSections = [
+  {
+    title: "آدرس فروشگاه",
+    text: "تهران – خیابان ولیعصر تقاطع طالقانی مجتمع نور تهران طبقه همکف سوم واحد 8019",
+    subtext: "",
+    icon: "/assets/icons/footer/marker.svg",
+  },
+  {
+    title: "پست الکترونیکی",
+    text: "info@computersales.ir",
+    subtext: "پاسخگوی سوالات و انتقادات شما هستیم",
+    icon: "/assets/icons/footer/postbox.svg",
+  },
+  {
+    title: "ساعات کاری",
+    text: "شنبه تا پنجشنبه ۹ الی ۱۸",
+    subtext: "همراه شما هستیم",
+    icon: "/assets/icons/footer/circle-clock.svg",
+  },
+  {
+    title: "مجوز های ما",
+    images: [
+      {
+        src: "/assets/images/symbols/enamad.webp",
+        href: "https://trustseal.enamad.ir/?id=280961&Code=3snkZ2KENp8NVb7F8PSi",
+        alt: "enamad",
+        width: 40,
+        height: 40,
+      },
+      {
+        src: "/assets/images/symbols/1.svg",
+        href: "https://logo.samandehi.ir/Verify.aspx?id=393839&p=xlaopfvlxlaomcsixlaopfvl",
+        alt: "samandehi",
+        width: 40,
+        height: 40,
+      },
+      {
+        src: "/assets/images/symbols/2.svg",
+        href: "https://qr.mojavez.ir/track/13097694",
+        alt: "mojavez",
+        width: 40,
+        height: 40,
+      },
+      {
+        src: "/assets/images/symbols/3.svg",
+        href: "https://eanjoman.ir/member/Gt20yVAiW5c089TPtx786yaWC",
+        alt: "eanjoman",
+        width: 40,
+        height: 40,
+      },
+      {
+        src: "/assets/images/symbols/torob.svg",
+        href: "https://torob.com/shop/6973/%D8%AD%D8%B1%D8%A7%D8%AC-%DA%A9%D8%A7%D9%85%D9%BE%DB%8C%D9%88%D8%AA%D8%B1/",
+        alt: "torob",
+        width: 40,
+        height: 40,
+      },
+      {
+        src: "/assets/images/symbols/emals.svg",
+        href: "https://emalls.ir/Shop/4266/",
+        alt: "emalls",
+        width: 40,
+        height: 40,
+      },
+    ],
+    icon: "/assets/icons/footer/certificate.svg",
+  },
+];
+
+const Footer = () => {
+  return (
+    <div className="lg:container lg:mx-auto lg:mb-8">
+      <div className="relative">
+        <div className="bg-primary absolute -top-8 right-10 text-white font-bold py-3 px-6 rounded-2xl">
+          ویژگی های های خرید از حراج کامپیوتر
+        </div>
+        <StoreBenefits className="border-2 border-stroke lg:rounded-t-2xl px-10 border-b-0 py-8" />
+      </div>
+      <div className="bg-secondary-900 px-6 lg:px-10 lg:rounded-b-2xl pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr_auto] mb-8 pb-8 border-b-2 border-b-white-10 gap-10">
+          {footerLinks.map((link) => (
+            <div key={link.title} className="flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <Image
+                  src={"/assets/icons/footer/shape.svg"}
+                  alt="arrow-left"
+                  width={16}
+                  height={16}
+                />
+                <span className="text-white font-bold">{link.title}</span>
+              </div>
+              <div className="flex flex-col gap-3 text-white-70 text-sm">
+                {link.links.map((link) => (
+                  <Link href={link.href} key={link.title}>
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <Image
+                src={"/assets/icons/footer/shape.svg"}
+                alt="arrow-left"
+                width={16}
+                height={16}
+              />
+              <span className="text-white font-bold">راه های ارتباطی</span>
+            </div>
+            <div className="flex flex-col gap-3 text-white-70 text-sm">
+              <div className="flex items-center justify-between gap-4">
+                <span>شماره ثابت:</span>
+                <div className="flex gap-4">
+                  <Link href={"tel:02145322"} className="font-bold text-white">
+                    <span>021-45322</span>
+                  </Link>
+                  <Link href={"tel:02145647"} className="font-bold text-white">
+                    <span>021-45647</span>
+                  </Link>
+                </div>
+              </div>
+              {/* <div className="flex items-center justify-between gap-4">
+                <span>تلگرام و واتساپ:</span>
+                <div className="flex gap-4">
+                  <Link
+                    href={"tel:09383912018"}
+                    className="font-bold text-white"
+                  >
+                    <span>09383912018</span>
+                  </Link>
+                  <Link
+                    href={"tel:09356035404"}
+                    className="font-bold text-white"
+                  >
+                    <span>09356035404</span>
+                  </Link>
+                </div>
+              </div> */}
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr_auto] mb-8 pb-8 border-b-2 border-b-white-10 gap-10">
+          {footerSections.map((section) => (
+            <div key={section.title} className="flex flex-col gap-4">
+              <div className="flex items-center text-white-50 gap-2 font-bold">
+                <div className="rounded-lg overflow-hidden w-10 h-12">
+                  <div className="bg-white-20 rounded-r-full w-full h-full rounded-l-lg overflow-hidden">
+                    <div className="bg-white w-full h-full rounded-r-full flex items-center justify-center">
+                      <Image
+                        src={section.icon}
+                        alt={section.title}
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <span className="text-white">{section.title}</span>
+              </div>
+              {section.text && (
+                <div className="w-2/3 text-sm leading-6">
+                  <p className="text-white">{section.text}</p>
+                  {section.subtext && (
+                    <p className="text-white-50">{section.subtext}</p>
+                  )}
+                </div>
+              )}
+              {section.images && (
+                <div className="flex items-center gap-2">
+                  {section.images.map((image) => (
+                    <Link
+                      className="bg-white rounded-lg"
+                      href={image.href}
+                      target="_blank"
+                      key={image.src}
+                    >
+                      <Image
+                        key={image.src}
+                        src={image.src}
+                        alt={image.alt}
+                        width={image.width}
+                        height={image.height}
+                        className="object-contain rounded-lg w-16 h-16"
+                      />
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="border border-white-20 bg-white-05 text-sm leading-8 flex flex-col gap-4 mb-6 rounded-2xl p-6 text-white-70">
+          <Image
+            src={"/assets/images/logo-full-white.svg"}
+            alt="logo"
+            width={142}
+            height={36}
+          />
+          <p>
+            حراج کامپیوتر یک فروشگاه اینترنتی تخصصی در زمینه فروش قطعات،
+            سیستم‌های اسمبل‌شده و تجهیزات جانبی کامپیوتری است که تلاش می‌کند
+            تجربه‌ای مطمئن، ساده و دقیق از خرید آنلاین را برای کاربران فراهم
+            کند. این وب‌سایت علاوه‌بر ارائه طیف وسیعی از محصولات اورجینال از
+            برندهای معتبر داخلی و خارجی، با تولید محتوای تخصصی و بررسی فنی
+            کالاها، به کاربران در انتخاب آگاهانه کمک می‌کند. ما با حذف واسطه‌ها
+            و همکاری مستقیم با تأمین‌کنندگان اصلی، محصولات را با قیمت رقابتی و
+            تضمین اصالت ارائه می‌دهیم و با پشتیبانی حرفه‌ای و مشاوره تخصصی پیش
+            از خرید، تلاش می‌کنیم تا سطحی متفاوت از خدمات آنلاین را تجربه کنید.
+          </p>
+        </div>
+        <div className="bg-primary px-4 ld:px-10 py-4 rounded-t-3xl flex gap-2 items-center justify-between flex-col lg:flex-row">
+          <div className="text-white text-center lg:text-right leading-6 text-sm order-2 lg:order-1">
+            تمامی حقوق مادی و معنوی این وب‌سایت متعلق به حراج کامپیوتر است و
+            هرگونه کپی‌برداری پیگرد قانونی دارد.
+          </div>
+          <div className="order-1 lg:order-2 flex items-center gap-2">
+            <a
+              href="https://instagram.com/computersalesir"
+              className="bg-white-20 w-12 h-12 rounded-xl flex items-center justify-center"
+            >
+              <Image
+                src={"/assets/icons/contact/instagram-white.svg"}
+                alt="instagram"
+                width={24}
+                height={24}
+              />
+            </a>
+            <a
+              href="https://t.me/+989122186234"
+              className="bg-white-20 w-12 h-12 rounded-xl flex items-center justify-center"
+            >
+              <Image
+                src={"/assets/icons/contact/telegram-white.svg"}
+                alt="instagram"
+                width={24}
+                height={24}
+              />
+            </a>
+            <a
+              href="https://wa.me/989122186234"
+              className="bg-white-20 w-12 h-12 rounded-xl flex items-center justify-center"
+            >
+              <Image
+                src={"/assets/icons/footer/whatsapp-white.svg"}
+                alt="instagram"
+                width={24}
+                height={24}
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="text-center mt-4">
+        <Link className="text-sm" href="https://deepen.ir" target="_blank" rel="noopener noreferrer">
+          توسعه و نگهداری توسط{" "}
+          <span
+            className="font-medium hover:underline inline-block"
+          >
+            Deepen
+          </span>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Footer;

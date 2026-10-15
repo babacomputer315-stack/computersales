@@ -1,0 +1,213 @@
+import axios, {
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from "axios";
+import { Category } from "./user/product.service";
+
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+
+// SSR-specific HTTP client without browser dependencies
+const ssrHttpClient: AxiosInstance = axios.create({
+  baseURL: BASE_URL,
+  timeout: 30000,
+});
+
+// Request interceptor for SSR
+ssrHttpClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    // Set default content type
+    if (config.data instanceof FormData) {
+      config.headers["Content-Type"] = "multipart/form-data";
+    } else {
+      config.headers["Content-Type"] = "application/json";
+    }
+
+    return config;
+  },
+  (error) => {
+    console.error("SSR Request Error:", error);
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor for SSR
+ssrHttpClient.interceptors.response.use(
+  (response: AxiosResponse) => {
+    // Log success messages in development
+    if (process.env.NODE_ENV === "development" && response?.data?.message) {
+      console.log("SSR API Success:", response.data.message);
+    }
+
+    return Promise.resolve(response);
+  },
+  (error: AxiosError) => {
+    // Handle SSR-specific error logging
+    if (error.response) {
+      const status = error.response.status;
+      const data = error.response.data as any;
+
+      const statusMessages: Record<number, string> = {
+        400: "Bad Request: Invalid input",
+        401: "Unauthorized: Authentication required",
+        403: "Forbidden: Insufficient permissions",
+        404: "Not Found: Resource not found",
+        500: "Internal Server Error: Server error occurred",
+      };
+
+      const customMessage = statusMessages[status] || `HTTP Error ${status}`;
+
+      // Log errors for debugging in SSR
+      console.error("SSR API Error:", {
+        status,
+        message: data?.message || customMessage,
+        errors: data?.errors,
+        url: error.config?.url,
+      });
+
+      // Handle validation errors
+      if (data?.errors?.length) {
+        console.error("Validation Errors:", data.errors);
+      }
+    } else if (error.request) {
+      console.error("SSR Network Error: No response received from server");
+    } else {
+      console.error("SSR Request Setup Error:", error.message);
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+// Helper functions for common SSR operations
+export const ssrHttpHelpers = {
+  // Get request with error handling
+  async get<T = any>(url: string, config?: any): Promise<T> {
+    try {
+      const response = await ssrHttpClient.get(url, config);
+      return response.data;
+    } catch (error) {
+      console.error(`SSR GET Error for ${url}:`, error);
+      throw error;
+    }
+  },
+
+  // Post request with error handling
+  async post<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    try {
+      const response = await ssrHttpClient.post(url, data, config);
+      return response.data;
+    } catch (error) {
+      console.error(`SSR POST Error for ${url}:`, error);
+      throw error;
+    }
+  },
+
+  // Put request with error handling
+  async put<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    try {
+      const response = await ssrHttpClient.put(url, data, config);
+      return response.data;
+    } catch (error) {
+      console.error(`SSR PUT Error for ${url}:`, error);
+      throw error;
+    }
+  },
+
+  // Delete request with error handling
+  async delete<T = any>(url: string, config?: any): Promise<T> {
+    try {
+      const response = await ssrHttpClient.delete(url, config);
+      return response.data;
+    } catch (error) {
+      console.error(`SSR DELETE Error for ${url}:`, error);
+      throw error;
+    }
+  },
+
+  // Patch request with error handling
+  async patch<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    try {
+      const response = await ssrHttpClient.patch(url, data, config);
+      return response.data;
+    } catch (error) {
+      console.error(`SSR PATCH Error for ${url}:`, error);
+      throw error;
+    }
+  },
+
+  // Build query string from object
+  buildQueryString(params: Record<string, any>): string {
+    const searchParams = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (Array.isArray(value)) {
+          value.forEach((item) => searchParams.append(key, item.toString()));
+        } else {
+          searchParams.append(key, value.toString());
+        }
+      }
+    });
+
+    return searchParams.toString();
+  },
+
+  // Create URL with query parameters
+  createUrl(path: string, params?: Record<string, any>): string {
+    if (!params || Object.keys(params).length === 0) {
+      return path;
+    }
+
+    const queryString = this.buildQueryString(params);
+    return `${path}?${queryString}`;
+  },
+
+  // Handle common SSR errors gracefully
+  handleError(error: any, fallbackData?: any) {
+    console.error("SSR Error:", error);
+
+    // Return fallback data if provided
+    if (fallbackData !== undefined) {
+      return fallbackData;
+    }
+
+    // Return empty data structure based on error
+    if (error?.response?.status === 404) {
+      return {
+        data: [],
+        meta: { page: 1, limit: 20, total: 0, pages: 0 },
+      };
+    }
+
+    // Default fallback
+    return { data: [], success: false, message: "Error occurred" };
+  },
+};
+
+// Type definitions for SSR responses
+export interface SSRResponse<T = any> {
+  success: boolean;
+  message: string;
+  data: T;
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+
+export interface SSRProductResponse
+  extends SSRResponse<{
+    data: any[];
+    productsMinPrice: number;
+    productsMaxPrice: number;
+  }> {}
+export interface SSRCategoryResponse extends SSRResponse<Category> {}
+export interface SSRProductDetailResponse extends SSRResponse<any> {}
+
+export default ssrHttpClient;
+
+
